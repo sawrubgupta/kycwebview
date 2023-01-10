@@ -1,0 +1,51 @@
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+      </head>
+
+<body>
+    <script>
+        const urlParams = new URLSearchParams(location.search);
+        
+        let token = ""
+        for (const [key, value] of urlParams) {
+            
+            if((key).toUpperCase() === 'TOKEN'){
+                token = value;
+            }   
+}
+
+if(!token){
+    window.alert("Please pass the token");
+}else{
+
+    const sdkScript = document.createElement('script');
+        sdkScript.src = `https://static.saasexch.com/static/binance/static/kyc-ui/sdk/0.0.2/sdk.js`
+        document.body.appendChild(sdkScript)
+        sdkScript.onload = () => {
+            if (BinanceKyc) {
+
+                const binanceKyc = new BinanceKyc({
+                    authToken: token,
+                    bizEntityKey: 'NINJA',
+                    apiHost: 'https://api.commonservice.io',
+                    onMessage: ({ typeCode }) => {
+                        if (typeCode === '102') {
+                            binanceKyc.switchVisible(true)
+                        }
+                    },
+                })
+            }
+        }
+
+}
+
+        
+    </script>
+</body>
+
+</html>
